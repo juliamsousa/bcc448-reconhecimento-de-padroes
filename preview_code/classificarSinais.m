@@ -5,18 +5,18 @@
 
 function percentual_acertoHOG = classificarSinais(percentual_teste)
   if nargin < 1
-      percentual_teste = 0.3;%Percentual recebe um valor padrão caso não seja fornecido
+      percentual_teste = 0.3;%Percentual recebe um valor padrï¿½o caso nï¿½o seja fornecido
   end
   
-  %----- Declaração e inicialização prévia de algumas das variáveis ----- 
+  %----- Declaraï¿½ï¿½o e inicializaï¿½ï¿½o prï¿½via de algumas das variï¿½veis ----- 
   contadorSinais=1;
   quant_sinais = zeros(1,7);
-  diretorio_raiz = 'C:\Users\julia\Documents\UFOP\8_Semestre\PDI\TP\TrabalhoFinal\BancodeImagens\';%Diretório do banco de imagens
+  diretorio_raiz = 'C:\Users\julia\Documents\UFOP\8_Semestre\PDI\TP\TrabalhoFinal\BancodeImagens\';%Diretï¿½rio do banco de imagens
   ext = '.png';
   etiquetas = zeros(397,1);
   percentual_acertoHOG = zeros(7,1);
   
-  %---------------- VARIÁVEIS REFERENTES AO DESCRITOR HOG ---------------- 
+  %---------------- VARIï¿½VEIS REFERENTES AO DESCRITOR HOG ---------------- 
   descritor_HOG = zeros(397,51984);
   %-----------------------------------------------------------------------
   
@@ -40,41 +40,43 @@ function percentual_acertoHOG = classificarSinais(percentual_teste)
     end
   end
   
-  %PREENCHE O VETOR DE ETIQUETAS DE ACORDO COM O CONHECIMENTO PRÉVIO
+  %PREENCHE O VETOR DE ETIQUETAS DE ACORDO COM O CONHECIMENTO PRï¿½VIO
   for i=1:397
       if(i<=57)
-          etiquetas(i) = 1;%Rótulo numérico para o sinal da letra 'A'
+          etiquetas(i) = 1;%Rï¿½tulo numï¿½rico para o sinal da letra 'A'
       end
       if(i>57 && i<=113)
-          etiquetas(i) = 2;%Rótulo numérico para o sinal da letra 'D'
+          etiquetas(i) = 2;%Rï¿½tulo numï¿½rico para o sinal da letra 'D'
       end
       if(i>113 && i<=170)
-          etiquetas(i) = 3;%Rótulo numérico para o sinal da letra 'I'
+          etiquetas(i) = 3;%Rï¿½tulo numï¿½rico para o sinal da letra 'I'
       end
       if(i>170 && i<=226)
-          etiquetas(i) = 4;%Rótulo numérico para o sinal da letra 'L'
+          etiquetas(i) = 4;%Rï¿½tulo numï¿½rico para o sinal da letra 'L'
       end
       if(i>226 && i<=282)
-          etiquetas(i) = 5;%Rótulo numérico para o sinal da letra 'V'
+          etiquetas(i) = 5;%Rï¿½tulo numï¿½rico para o sinal da letra 'V'
       end
       if(i>282 && i<=339)
-          etiquetas(i) = 6;%Rótulo numérico para o sinal da letra 'W'
+          etiquetas(i) = 6;%Rï¿½tulo numï¿½rico para o sinal da letra 'W'
       end
       if(i>339 && i<=397)
-          etiquetas(i) = 7;%Rótulo numérico para o sinal da letra 'Y'
+          etiquetas(i) = 7;%Rï¿½tulo numï¿½rico para o sinal da letra 'Y'
       end
   end
   
   %---------------- OBTEM OS DADOS DE TREINO E DE TESTE ------------------
   descritor_HOG = normaliza(descritor_HOG);
   [treinoHOG, testeHOG] = crossvalind('HoldOut', etiquetas, percentual_teste);
+  
   desc_treinoHOG = descritor_HOG(treinoHOG,:);
   desc_testeHOG = descritor_HOG(testeHOG,:);
+
   etiqueta_treinoHOG = etiquetas(treinoHOG,:);
   etiqueta_testeHOG = etiquetas(testeHOG,:);
   %-----------------------------------------------------------------------
 
-  %---------- TREINAMENTO E CLASSIFICAÇÃO PARA O DESCRITOR HOG -----------
+  %---------- TREINAMENTO E CLASSIFICAï¿½ï¿½O PARA O DESCRITOR HOG -----------
   parametrosSVM = templateSVM('KernelFunction','polynomial','KernelScale','auto','Standardize',1);
   modelo = fitcecoc(desc_treinoHOG, etiqueta_treinoHOG,'Learners',parametrosSVM,'Coding','onevsall');
   classificador = predict(modelo, desc_testeHOG);
