@@ -2,10 +2,9 @@
 % define o caminho das imagens do banco de dados e armazena as imagens do banco de dados no programa
 data_base_path = "..\Folds_Dataset_Final";
 data_base = imageDatastore(data_base_path, 'IncludeSubfolders',true, 'LabelSource','foldernames');
-% particiona o banco de dados em 5 partes, a serem permutadas pelo k-fold
-% [testing_data_base, training_data_base] = splitEachLabel(data_base, 0.40, 0.60);
+ [testing_data_base, training_data_base] = splitEachLabel(data_base, 0.40, 0.60);
 % [testing_data_base, training_data_base] = splitEachLabel(data_base, 0.30, 0.70);
-[testing_data_base, training_data_base] = splitEachLabel(data_base, 0.20, 0.80);
+%[testing_data_base, training_data_base] = splitEachLabel(data_base, 0.20, 0.80);
 %--------------------------------------------------------------------------
 
 %---------------------------- TREINAMENTO ---------------------------------
